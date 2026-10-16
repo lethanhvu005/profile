@@ -1,5 +1,7 @@
 # Portfolio — ReactJS + Django
 
+Hướng dẫn deploy hiện tại: [DEPLOY_RENDER.md](DEPLOY_RENDER.md). Backend tự đọc `backend/.env`; mẫu biến môi trường nằm ở `backend/.env.example`.
+
 Giao diện nền đen/vàng, 4 trang, responsive, đổi sáng/tối và lọc dự án.
 React quản lý giao diện bằng component và hooks; Django cung cấp API, SQLite và trang quản trị.
 Ảnh chân dung mặc định là hình vẽ SVG minh họa, có thể thay bằng URL ảnh trong Admin. Dự án mẫu có nhãn minh họa.
@@ -52,7 +54,7 @@ npm run build
 Đây là source chạy local. Website demo trước đó vẫn là bản HTML tĩnh.
 Khi deploy React + Django, phục vụ frontend/dist bằng static host/reverse proxy và chuyển /api sang Django; cấu hình Django Admin/static riêng.
 Đặt DJANGO_DEBUG=0, DJANGO_SECRET_KEY ngẫu nhiên và DJANGO_ALLOWED_HOSTS đúng tên miền; dùng HTTPS và máy chủ WSGI thay runserver.
-Không có form gửi mail hoặc chức năng upload file trong phiên bản này; trường ảnh dùng URL.
+Admin hỗ trợ upload ảnh bìa, bộ ảnh dự án và link YouTube demo. Chưa có form gửi mail.
 
 ## Trạng thái xác minh khi bàn giao
 - npm install và npm run build: thành công.

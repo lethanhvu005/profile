@@ -28,7 +28,7 @@ export default function About({ profile }) {
             </p>
             <div className="facts">
               <div>
-                <span>HỌ VÀ TÊN</span>Lê Thanh Vũ
+                <span>HỌ VÀ TÊN</span>Lê Thành Vũ
               </div>
               <div>
                 <span>ĐỊNH HƯỚNG</span>Web Development

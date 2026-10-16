@@ -6,6 +6,7 @@ __pycache__/
 *.sqlite3
 .env
 backend/media/
+backend/staticfiles/
 node_modules/
 .venv/
 venv/
