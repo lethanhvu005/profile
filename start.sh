@@ -1,13 +1,9 @@
 #!/bin/sh
 set -eu
-mkdir -p /var/data/media
 cd /app/backend
-initialize=0
-if [ ! -f "${DJANGO_DB_PATH:-/var/data/db.sqlite3}" ]; then
-    initialize=1
-fi
 python manage.py migrate --noinput
-if [ "$initialize" = 1 ]; then
+python manage.py bootstrap_admin
+if [ "${SEED_DEMO:-0}" = "1" ]; then
     python manage.py seed_demo
     python manage.py seed_project_images
 fi

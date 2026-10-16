@@ -39,3 +39,27 @@ MEDIA_URL='/media/'
 MEDIA_ROOT=Path(os.environ.get('DJANGO_MEDIA_ROOT',str(BASE_DIR/'media')))
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 WSGI_APPLICATION='config.wsgi.application'
+
+# External services are optional locally, required for production runtime.
+import dj_database_url
+DATABASE_URL=os.environ.get('DATABASE_URL','').strip()
+if DATABASE_URL:
+    DATABASES['default']=dj_database_url.parse(DATABASE_URL,conn_max_age=0,ssl_require=not DEBUG)
+    if DATABASES['default']['ENGINE'] != 'django.db.backends.postgresql':
+        raise ImproperlyConfigured('DATABASE_URL must use PostgreSQL.')
+    DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS']=True
+CLOUDINARY_STORAGE={
+    'CLOUD_NAME':os.environ.get('CLOUDINARY_CLOUD_NAME',''),
+    'API_KEY':os.environ.get('CLOUDINARY_API_KEY',''),
+    'API_SECRET':os.environ.get('CLOUDINARY_API_SECRET',''),
+    'SECURE':True,
+}
+if all(CLOUDINARY_STORAGE[k] for k in ['CLOUD_NAME','API_KEY','API_SECRET']):
+    STORAGES['default']={'BACKEND':'cloudinary_storage.storage.MediaCloudinaryStorage'}
+elif any(CLOUDINARY_STORAGE[k] for k in ['CLOUD_NAME','API_KEY','API_SECRET']):
+    raise ImproperlyConfigured('Set all three CLOUDINARY credentials.')
+if not DEBUG:
+    if not DATABASE_URL:
+        raise ImproperlyConfigured('Production requires DATABASE_URL (PostgreSQL).')
+    if STORAGES['default']['BACKEND']=='django.core.files.storage.FileSystemStorage':
+        raise ImproperlyConfigured('Production requires Cloudinary image storage.')

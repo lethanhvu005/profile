@@ -1,54 +1,82 @@
-# Deploy React + Django lên Render
+# Render Free + Neon PostgreSQL + Cloudinary
 
-## Cấu hình đã chuẩn bị
+Ứng dụng chạy trên Render Free. Neon lưu database và tài khoản admin; Cloudinary lưu ảnh upload. Không cần ổ đĩa hoặc Shell trên Render. Các dịch vụ có giới hạn sử dụng; kiểm tra gói trước khi đăng ký.
 
-- Một Docker Web Service phục vụ React, `/api/`, `/admin/`, `/static/` và `/media/` trên cùng domain. Không cần frontend env hoặc CORS.
-- `render.yaml`: plan Starter và persistent disk 1 GB. **Có phí cho service và disk**; xem giá hiện tại trên Render trước khi tạo.
-- SQLite `/var/data/db.sqlite3` và ảnh `/var/data/media` nằm trên disk để tồn tại qua restart/deploy.
-- Phù hợp portfolio cá nhân, một instance. Khi cần nhiều instance, chuyển sang PostgreSQL và object storage.
-- Docker build React và collectstatic; migrate chạy lúc start vì disk chỉ có ở runtime.
+## 1. Tạo database Neon
 
-## Deploy
+1. Đăng ký tại https://console.neon.tech/ và tạo project `portfolio`.
+2. Chọn region gần service Render.
+3. Chọn **Connect**, tắt **Connection pooling** để lấy direct PostgreSQL URL dùng cho migration và ứng dụng.
+4. Giữ tham số TLS như `sslmode=require` trong URL.
+5. Lưu URL vào biến `DATABASE_URL` trên Render. Không gửi URL vào chat hoặc đưa lên GitHub vì có chứa mật khẩu.
 
-1. Commit/push source lên GitHub, gồm Dockerfile, start.sh, render.yaml, migrations, frontend/package-lock.json và backend/demo_assets. Không commit `.env`, SQLite, media hoặc tài khoản admin.
-2. Render → New → Blueprint → kết nối repository → chọn branch có `render.yaml`.
-3. Kiểm tra plan/disk và chi phí, rồi tạo service. Render tự tạo secret key và cấp domain; cấu hình tự nhận `RENDER_EXTERNAL_HOSTNAME`.
-4. Chờ deploy Live. Mở URL service, `/health/` và `/api/portfolio/`.
-5. Trong Render Shell chạy:
+## 2. Tạo nơi lưu ảnh Cloudinary
 
-   ```sh
-   cd /app/backend
-   python manage.py createsuperuser
-   ```
+1. Đăng ký tại https://cloudinary.com/ và mở Console.
+2. Trong **API Keys**, lấy **Cloud name**, **API key** và **API secret**.
+3. Nhập vào ba biến môi trường tương ứng trên Render ở bảng bên dưới.
 
-6. Vào `/admin/` bằng tài khoản vừa tạo. Sửa Profile, Project, ảnh và video. Bấm dự án trên trang web để kiểm tra ảnh/video.
-7. Restart service rồi kiểm tra nội dung và ảnh còn nguyên.
+Backend dùng thông tin xác thực để upload ảnh; không cần unsigned upload preset.
 
-## Dữ liệu hiện tại trên máy
+## 3. Deploy lên Render
 
-Lần đầu deploy tạo dữ liệu demo, hai ảnh minh họa dùng chung và link video mẫu. **Dữ liệu cá nhân trong SQLite local và ảnh upload local không tự chuyển lên Render.** Có thể nhập lại qua admin hoặc chuyển dữ liệu riêng qua SSH; không push database lên GitHub. Admin local cũng không tự chuyển lên hosting.
+Push code lên GitHub. Vào **Render → New → Blueprint**, chọn repository chứa `render.yaml`. Blueprint dùng `plan: free`, không có persistent disk.
 
-## Biến môi trường
+Nếu đã có service, cập nhật **Environment** và deploy commit mới; kiểm tra **Instance Type** là **Free**. Không xóa disk cũ nếu chưa sao lưu dữ liệu cần giữ.
 
-Local: `backend/.env` được tự nạp, đã được gitignore. Máy khác sao chép `backend/.env.example` thành `.env`, thay secret placeholder bằng giá trị ngẫu nhiên riêng.
-
-Render: dùng Environment trong dashboard, không upload `.env` local. Blueprint cấu hình:
+Điền các biến trong **Environment**:
 
 | Biến | Giá trị |
 |---|---|
-| DJANGO_DEBUG | 0 |
-| DJANGO_SECRET_KEY | Render tự sinh |
-| DJANGO_DB_PATH | /var/data/db.sqlite3 |
-| DJANGO_MEDIA_ROOT | /var/data/media |
-| DJANGO_ALLOWED_HOSTS | localhost,127.0.0.1; domain Render được tự thêm |
+| `DJANGO_DEBUG` | `0` |
+| `DJANGO_SECRET_KEY` | Blueprint tự sinh; service tạo thủ công cần secret ngẫu nhiên dài |
+| `DATABASE_URL` | PostgreSQL URL từ Neon |
+| `CLOUDINARY_CLOUD_NAME` | Cloud name |
+| `CLOUDINARY_API_KEY` | API key |
+| `CLOUDINARY_API_SECRET` | API secret |
+| `DJANGO_SUPERUSER_USERNAME` | Tên admin bạn tự chọn |
+| `DJANGO_SUPERUSER_EMAIL` | Email của bạn |
+| `DJANGO_SUPERUSER_PASSWORD` | Mật khẩu mạnh do bạn tự đặt |
+| `SEED_DEMO` | `1` cho lần đầu, sau đó đổi thành `0` |
 
-Nếu dùng domain riêng, thêm domain vào `DJANGO_ALLOWED_HOSTS` và origin `https://your-domain` vào `DJANGO_CSRF_TRUSTED_ORIGINS` (nhiều giá trị ngăn cách bằng dấu phẩy).
+Domain Render được tự nhận. Nếu dùng domain riêng, thêm domain vào `DJANGO_ALLOWED_HOSTS` và thêm origin `https://domain` vào `DJANGO_CSRF_TRUSTED_ORIGINS`.
 
-## Lưu ý vận hành
+Khi khởi động, ứng dụng chạy migration, tạo admin đầu tiên và nạp dữ liệu mẫu nếu `SEED_DEMO=1`. Ứng dụng không đổi mật khẩu admin hiện có và không nâng quyền tài khoản thường. Nếu thiếu cấu hình, xem thông báo trong **Logs**. Không cần dùng Shell.
 
-- Media được phục vụ qua FileResponse với kiểm tra đường dẫn và loại ảnh; static qua WhiteNoise.
-- Không dùng Render Free với SQLite/ảnh local: filesystem không bền vững, không gắn được persistent disk.
-- Disk chỉ dùng một instance và deploy có khoảng gián đoạn. Sao lưu SQLite bằng SQLite backup API và sao lưu thư mục media định kỳ; không xem git là bản sao lưu dữ liệu.
-- Chưa tạo dịch vụ hoặc kiểm chứng URL Render Live từ phiên làm việc này.
+## 4. Sau khi service báo Live
 
-Tài liệu: https://render.com/docs/disks và https://render.com/docs/deploy-django
+1. Mở `/health/`, `/api/portfolio/` và `/admin/` trên domain của service.
+2. Đăng nhập bằng username và password đã đặt trong Environment.
+3. Xóa ba biến `DJANGO_SUPERUSER_*` sau khi tạo tài khoản thành công. Tài khoản đã được lưu trong Neon.
+4. Đổi `SEED_DEMO=0` để ứng dụng không thêm lại nội dung mẫu đã xóa.
+5. Upload ảnh và thêm link YouTube trong admin. URL ảnh phải là HTTPS của Cloudinary.
+6. Restart hoặc deploy lại, rồi kiểm tra dữ liệu và ảnh vẫn còn nguyên.
+
+Nếu quên mật khẩu, trên máy local cấu hình `DATABASE_URL` trỏ tới Neon trong `backend/.env`, rồi chạy từ thư mục `backend`:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py changepassword <username>
+```
+
+Thay `<username>` bằng tên admin của bạn. Ứng dụng không tự reset mật khẩu mỗi lần khởi động.
+
+## Local và dữ liệu cũ
+
+- `backend/.env` được tự đọc và đã được gitignore. `.env.example` chỉ chứa mẫu cấu hình.
+- Để `DATABASE_URL` và ba biến Cloudinary trống nếu muốn tiếp tục dùng SQLite và ảnh local.
+- Frontend không cần file env vì chạy cùng domain với API.
+- Dữ liệu SQLite, ảnh cá nhân và tài khoản admin local không tự chuyển lên Neon. Bản deploy đầu có dữ liệu mẫu; nhập lại nội dung và upload lại ảnh qua admin.
+- Không push `db.sqlite3` hoặc `.env` lên GitHub.
+- Database lưu public ID ảnh và link YouTube; Cloudinary lưu file ảnh.
+
+Production sẽ dừng nếu thiếu PostgreSQL hoặc Cloudinary để tránh ghi dữ liệu vào filesystem tạm. Render Free có thể ngủ khi không hoạt động; theo dõi giới hạn sử dụng và sao lưu dữ liệu.
+
+## Trạng thái xác minh
+
+Chưa có thông tin kết nối Neon/Cloudinary nên chưa kiểm chứng kết nối cloud, upload thật hoặc Render Live. Kiểm tra local không thay thế bước kiểm tra trên hosting.
+
+Tài liệu tham khảo:
+
+- https://render.com/docs/free
+- https://neon.com/docs
+- https://github.com/klis87/django-cloudinary-storage
