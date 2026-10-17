@@ -50,7 +50,7 @@ export default function ProjectDetail({ project }) {
         </section>}
         {project.youtube_url && <section className="detail-section">
           <h2>Video demo sản phẩm</h2>
-          {embed && <iframe className="project-video" src={embed} title={`Demo ${project.title}`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}
+          {embed && <iframe className="project-video" src={embed} title={`Demo ${project.title}`} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}
           <p className="note">Xem video trên YouTube nếu trình phát không khả dụng.</p>
           <ExternalLink href={project.youtube_url}>XEM TRÊN YOUTUBE</ExternalLink>
         </section>}
