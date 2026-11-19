@@ -53,7 +53,10 @@ REAL_PROJECTS = [
             '• Xây dựng FastAPI endpoints cho đăng ký, đăng nhập JWT, cài đặt người dùng, sự kiện buồn ngủ, lịch sử SOS và bằng chứng sự cố.\n'
             '• Sử dụng SQLAlchemy hỗ trợ SQLite khi phát triển cục bộ và PostgreSQL khi triển khai.\n'
             '• Giao diện React/TypeScript cho người dùng và quản trị viên gồm dashboard giám sát, xác nhận SOS, nhật ký gửi thông báo khẩn cấp, email retry và audit log.\n'
-            '• Chuẩn bị Docker Compose và cấu hình triển khai Render cho cả frontend và backend.'
+            '• Chuẩn bị Docker Compose và cấu hình triển khai Render cho cả frontend và backend.\n\n'
+            'Tài khoản trải nghiệm (Test):\n'
+            '• Email: driver1@example.com\n'
+            '• Mật khẩu: Driver@123'
         ),
     },
 ]
@@ -72,9 +75,12 @@ class Command(BaseCommand):
         Project.objects.filter(is_demo=True).delete()
         Project.objects.filter(title__in=SAMPLE_PROJECT_TITLES).delete()
         for item in REAL_PROJECTS:
-            Project.objects.get_or_create(
+            project, _ = Project.objects.get_or_create(
                 title=item['title'],
                 defaults={k: v for k, v in item.items() if k != 'title'},
             )
+            if item['title'] == 'SafeVision — AI Driver Safety System' and 'driver1@example.com' not in (project.content or ''):
+                project.content = item['content']
+                project.save(update_fields=['content'])
         self.stdout.write(self.style.SUCCESS('Real portfolio data ready'))
 
