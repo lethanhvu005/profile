@@ -82,9 +82,16 @@ class PortfolioTests(TestCase):
     def test_missing_profile_returns_actionable_error(self):
         self.assertEqual(self.client.get('/api/portfolio/').status_code,503)
     def test_seed_is_idempotent_and_api_reads_database(self):
+        Project.objects.create(title='Personal Portfolio',description='Old sample',category='web',is_demo=True)
         call_command('seed_demo');call_command('seed_demo')
-        self.assertEqual(Project.objects.count(),4)
-        p=Project.objects.first();p.title='Updated';p.save()
+        self.assertEqual(Project.objects.count(),2)
+        self.assertFalse(Project.objects.filter(is_demo=True).exists())
+        projects=list(Project.objects.all())
+        self.assertEqual(projects[0].demo_url,'https://nexa-commerceos-lethanhvu005-c89e.onrender.com/')
+        self.assertEqual(projects[0].source_url,'https://github.com/lethanhvu005/E-Commerce-Project')
+        self.assertEqual(projects[1].demo_url,'https://safevision-web.onrender.com')
+        self.assertEqual(projects[1].source_url,'https://github.com/lethanhvu005/SafeVision')
+        p=projects[0];p.title='Updated';p.save()
         r=self.client.get('/api/portfolio/')
         self.assertEqual(r.status_code,200)
         self.assertEqual(r.json()['projects'][0]['title'],'Updated')

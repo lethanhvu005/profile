@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function Home({ profile }) {
   return (
     <section className="page" id="home">
@@ -65,12 +66,12 @@ export default function Home({ profile }) {
           </h1>
           <p>{profile.bio}</p>
           <div className="actions">
-            <a className="pill" href="#about">
+            <Link className="pill" to="/about">
               <i>→</i> VỀ MÌNH
-            </a>
-            <a className="pill" href="#projects">
+            </Link>
+            <Link className="pill" to="/projects">
               <i>↗</i> XEM DỰ ÁN
-            </a>
+            </Link>
           </div>
         </div>
         <div className="hero-footer">

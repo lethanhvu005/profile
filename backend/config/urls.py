@@ -7,5 +7,6 @@ from portfolio.views import portfolio
 urlpatterns=[path('admin/',admin.site.urls),path('api/portfolio/',portfolio)]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [path('',frontend),path('health/',health)]
+urlpatterns += [re_path(r'^(?:home|about|contact|projects(?:/[0-9]+)?)/?$',frontend)]
 if not settings.DEBUG:
     urlpatterns += [re_path(r'^media/(?P<name>.+)$',uploaded_image)]

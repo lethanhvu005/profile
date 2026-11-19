@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function About({ profile }) {
   return (
     <section className="page" id="about">
@@ -40,9 +41,9 @@ export default function About({ profile }) {
                 <span>GITHUB</span>lethanhvu005
               </div>
             </div>
-            <a className="pill" href="#contact">
+            <Link className="pill" to="/contact">
               <i>↗</i> KẾT NỐI VỚI MÌNH
-            </a>
+            </Link>
           </div>
           <div className="skills">
             <div className="kicker">Công nghệ quan tâm</div>

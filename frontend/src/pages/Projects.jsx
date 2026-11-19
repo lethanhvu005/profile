@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 export default function Projects({ projects }) {
   const [filter, setFilter] = useState("all");
@@ -30,10 +31,10 @@ export default function Projects({ projects }) {
           {projects
             .filter((p) => filter === "all" || p.category === filter)
             .map((p, i) => (
-              <a
+              <Link
                 className="project"
                 key={p.id}
-                href={`#projects/${p.id}`}
+                to={`/projects/${p.id}`}
               >
                 <div
                   className={"art " + ["one", "two", "three", "four"][i % 4]}
@@ -51,7 +52,7 @@ export default function Projects({ projects }) {
                   ) : (
                     <div className="mock">
                       <b>{p.title}</b>
-                      <p>LEARN. BUILD. EXPLORE.</p>
+                      <p>{p.technologies || "FULL-STACK PROJECT"}</p>
                       <div className="blocks">
                         <i />
                         <i />
@@ -68,7 +69,7 @@ export default function Projects({ projects }) {
                   <h3>{p.title} ↗</h3>
                   <p>{p.description}</p>
                 </div>
-              </a>
+              </Link>
             ))}
         </div>
         {projects.length === 0 && (

@@ -33,7 +33,13 @@ body.light .pill i,body.light .pill:hover{color:#fff}
 .project-cover{display:block;width:100%;max-height:620px;object-fit:contain;background:var(--panel);border-radius:18px}
 .detail-section{margin-top:44px}.detail-section h2{font-size:24px}.project-content{white-space:pre-wrap;overflow-wrap:anywhere}
 .project-video{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:16px;background:#000;margin-bottom:20px}
+.project-preview{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel);margin-bottom:20px}
+.project-preview-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);font-size:12px}
+.preview-dots{display:flex;gap:6px;flex-shrink:0}.preview-dots i{width:10px;height:10px;border-radius:50%;background:var(--line);display:block}
+.preview-url{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-family:monospace}
+.preview-open{flex-shrink:0;color:var(--accent);font-weight:600;white-space:nowrap}.preview-open:hover{text-decoration:underline}
+.project-live{display:block;width:100%;height:min(72vh,680px);min-height:460px;border:0;background:#fff}
 .project-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.project-gallery figure{margin:0;min-width:0}
 .project-gallery img{display:block;width:100%;height:280px;object-fit:contain;background:var(--panel);border:1px solid var(--line);border-radius:12px}
 .project-gallery figcaption{font-size:13px;color:var(--muted);line-height:1.8;margin-top:10px;overflow-wrap:anywhere}
-@media(max-width:800px){.project-gallery{grid-template-columns:1fr}.project-gallery img{height:auto;max-height:450px}.project-heading h1{font-size:32px}.project-detail .actions{justify-content:flex-start}}
+@media(max-width:800px){.project-gallery{grid-template-columns:1fr}.project-gallery img{height:auto;max-height:450px}.project-heading h1{font-size:32px}.project-detail .actions{justify-content:flex-start}.project-live{height:520px;min-height:380px}}

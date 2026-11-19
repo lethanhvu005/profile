@@ -1,3 +1,4 @@
+import { BrowserRouter, Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -24,8 +25,10 @@ const ids = ["home", "about", "projects", "contact"],
       <path d="m3 6 9 7 9-7" />
     </>,
   ];
-export default function App() {
-  const [page, setPage] = useState(location.hash.slice(1) || "home");
+function PortfolioApp() {
+  const route = useLocation();
+  const navigate = useNavigate();
+  const page = route.pathname.replace(/^\/|\/$/g, "") || "home";
   const activePage = page.startsWith("projects/") ? "projects" : page;
   const [light, setLight] = useState(
     localStorage.getItem("vu-theme") === "light",
@@ -33,13 +36,14 @@ export default function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   useEffect(() => {
-    const f = () => {
-      setPage(location.hash.slice(1) || "home");
-      window.scrollTo(0, 0);
-    };
-    addEventListener("hashchange", f);
-    return () => removeEventListener("hashchange", f);
-  }, []);
+    const legacy = route.hash.slice(1);
+    if (/^(home|about|contact|projects(?:\/\d+)?)$/.test(legacy)) {
+      navigate(legacy === "home" ? "/" : `/${legacy}`, { replace: true });
+    } else if (route.pathname === "/home") {
+      navigate("/", { replace: true });
+    }
+    window.scrollTo(0, 0);
+  }, [route.pathname, route.hash, navigate]);
   useEffect(() => {
     document.body.classList.toggle("light", light);
     localStorage.setItem("vu-theme", light ? "light" : "dark");
@@ -62,9 +66,9 @@ export default function App() {
   }, []);
   return (
     <>
-      <a className="brand" href="#home">
+      <Link className="brand" to="/">
         Thành Vũ<span></span>
-      </a>
+      </Link>
       <button
         className="theme"
         aria-label={light ? "Chuyển sang giao diện tối" : "Chuyển sang giao diện sáng"}
@@ -83,7 +87,7 @@ export default function App() {
           <button
             key={id}
             className={activePage === id ? "active" : ""}
-            onClick={() => (location.hash = id)}
+            onClick={() => navigate(id === "home" ? "/" : `/${id}`)}
             aria-label={labels[i]}
             aria-current={activePage === id ? "page" : undefined}
           >
@@ -116,4 +120,8 @@ export default function App() {
       </main>
     </>
   );
+}
+
+export default function App() {
+  return <BrowserRouter><PortfolioApp /></BrowserRouter>;
 }

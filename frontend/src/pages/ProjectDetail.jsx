@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function youtubeEmbed(value) {
   try {
     const url = new URL(value);
@@ -23,15 +24,16 @@ export default function ProjectDetail({ project }) {
   if (!project) return (
     <section className="page"><div className="content">
       <h1>Không tìm thấy dự án</h1>
-      <a className="back-link" href="#projects">← Quay lại dự án</a>
+      <Link className="back-link" to="/projects">← Quay lại dự án</Link>
     </div></section>
   );
   const embed = youtubeEmbed(project.youtube_url);
+  const liveUrl = /^https?:\/\//i.test(project.demo_url || "") ? project.demo_url : null;
   const technologies = (project.technologies || "").split(",").map((item) => item.trim()).filter(Boolean);
   return (
     <section className="page">
       <article className="content project-detail">
-        <a className="back-link" href="#projects">← Tất cả dự án</a>
+        <Link className="back-link" to="/projects">← Tất cả dự án</Link>
         <header className="project-heading">
           <p className="kicker">{project.category}{project.is_demo ? " · Dự án minh họa" : ""}</p>
           <h1>{project.title}</h1>
@@ -47,6 +49,27 @@ export default function ProjectDetail({ project }) {
         {project.content && <section className="detail-section">
           <h2>Thông tin dự án</h2>
           <p className="body-copy project-content">{project.content}</p>
+        </section>}
+        {liveUrl && <section className="detail-section">
+          <h2>Xem trước trang web trực tiếp</h2>
+          <div className="project-preview">
+            <div className="project-preview-bar">
+              <div className="preview-dots" aria-hidden="true"><i /><i /><i /></div>
+              <span className="preview-url">{liveUrl}</span>
+              <a className="preview-open" href={liveUrl} target="_blank" rel="noopener noreferrer">Mở tab mới ↗</a>
+            </div>
+            <iframe
+              className="project-live"
+              src={liveUrl}
+              title={`Trang web trực tiếp ${project.title}`}
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"
+              allowFullScreen
+            />
+          </div>
+          <p className="note">Trang web được triển khai trên Render (có thể mất vài giây để khởi động lần đầu). Nếu khung xem trước chưa tải được, hãy mở trực tiếp ở tab mới.</p>
+          <ExternalLink href={liveUrl}>MỞ TRANG WEB TRỰC TIẾP</ExternalLink>
         </section>}
         {project.youtube_url && <section className="detail-section">
           <h2>Video demo sản phẩm</h2>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function Contact({ profile }) {
   return (
     <section className="page" id="contact">
@@ -51,9 +52,9 @@ export default function Contact({ profile }) {
               Lập trình bằng sự tò mò.
             </h3>
             <p>Cảm ơn bạn đã ghé thăm không gian cá nhân của mình.</p>
-            <a className="pill" href="#projects">
+            <Link className="pill" to="/projects">
               <i>→</i> KHÁM PHÁ DỰ ÁN
-            </a>
+            </Link>
           </div>
         </div>
         <footer className="foot">
