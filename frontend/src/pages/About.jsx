@@ -35,10 +35,15 @@ export default function About({ profile }) {
                 <span>ĐỊNH HƯỚNG</span>Web Development
               </div>
               <div>
-                <span>NGÔN NGỮ</span>Tiếng Việt
-              </div>
-              <div>
-                <span>GITHUB</span>lethanhvu005
+                <span>GITHUB</span>
+                <a
+                  className="fact-link"
+                  href="https://github.com/lethanhvu005"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  lethanhvu005 ↗
+                </a>
               </div>
             </div>
             <Link className="pill" to="/contact">
