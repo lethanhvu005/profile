@@ -82,8 +82,17 @@ body.light{background-image:radial-gradient(circle at 85% 12%,color-mix(in srgb,
 ::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
 ::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 
-.brand{letter-spacing:-1.2px;transition:opacity .2s ease}
-.brand:hover{opacity:.85}
+.brand{display:inline-flex;align-items:center;gap:12px;letter-spacing:-1px;transition:transform .25s cubic-bezier(.22,1,.36,1),opacity .2s ease}
+.brand:hover{transform:translateY(-1px);opacity:1}
+.brand-mark{width:38px;height:38px;flex-shrink:0;filter:drop-shadow(0 6px 16px #0005);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.brand:hover .brand-mark{transform:rotate(-4deg) scale(1.05)}
+.brand-mark .mark-bg{fill:var(--panel);stroke:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.brand-mark .mark-t{stroke:var(--text)}
+.brand-mark .mark-v{stroke:var(--accent)}
+.brand-text{color:var(--text);font-weight:800;line-height:1}
+.brand-text b{color:var(--accent);font-weight:800}
+body.light .brand-mark .mark-bg{fill:#141619;stroke:var(--accent)}
+body.light .brand-mark .mark-t{stroke:#fff}
 .theme{box-shadow:0 8px 24px #0004;backdrop-filter:blur(10px);transition:transform .25s cubic-bezier(.22,1,.36,1),border-color .25s ease,background-color .25s ease}
 .theme:hover{transform:translateY(-2px) rotate(12deg);border-color:var(--accent)}
 .nav button{border:1px solid var(--line);box-shadow:0 8px 22px #0004;transition:transform .25s cubic-bezier(.22,1,.36,1),background-color .25s ease,color .25s ease,border-color .25s ease,box-shadow .25s ease}

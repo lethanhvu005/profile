@@ -68,8 +68,13 @@ function PortfolioApp() {
   }, []);
   return (
     <>
-      <Link className="brand" to="/">
-        Thành Vũ<span></span>
+      <Link className="brand" to="/" aria-label="Thành Vũ — Trang chủ">
+        <svg className="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="38" height="38" rx="10" className="mark-bg" strokeWidth="1.5" />
+          <path d="M9.5 12.5h11M15 12.5v15.5" className="mark-t" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M21 12.5l4.8 15.5 4.8-15.5" className="mark-v" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span className="brand-text">Thành Vũ<b>.</b></span>
       </Link>
       <button
         className="theme"
