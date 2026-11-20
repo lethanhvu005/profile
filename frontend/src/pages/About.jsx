@@ -41,14 +41,14 @@ const skillGroups = [
     items: ["Render", "Docker", "Docker Compose", "CI/CD"],
   },
   {
-    title: "AI / Thị giác máy tính & Kiểm thử",
+    title: "Sử dụng công cụ AI",
     items: [
-      "OpenCV",
-      "MediaPipe",
-      "YOLO / Ultralytics",
-      "Django TestCase",
-      "Pytest",
-      "Playwright",
+      "OpenAI Codex",
+      "Antigravity",
+      "ChatGPT",
+      "GitHub Copilot",
+      "Gemini",
+      "Cursor",
     ],
   },
 ];
