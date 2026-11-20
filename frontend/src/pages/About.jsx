@@ -1,4 +1,58 @@
 import { Link } from "react-router-dom";
+
+const skillGroups = [
+  {
+    title: "Frontend",
+    items: [
+      "ReactJS (Components, Hooks)",
+      "React Router",
+      "JavaScript (ES6+)",
+      "TypeScript",
+      "HTML5 / CSS3",
+      "Tailwind CSS",
+      "Axios / Fetch API",
+      "Responsive UI",
+    ],
+  },
+  {
+    title: "Backend",
+    items: [
+      "Python",
+      "Django",
+      "Django REST Framework",
+      "FastAPI",
+      "Flask",
+      "RESTful API",
+      "Django ORM",
+      "SQLAlchemy",
+      "JWT & RBAC",
+    ],
+  },
+  {
+    title: "Database",
+    items: ["PostgreSQL", "SQLite", "SQL", "Thiết kế CSDL quan hệ"],
+  },
+  {
+    title: "Git & Công cụ",
+    items: ["Git", "GitHub", "GitHub Actions", "Postman", "VS Code"],
+  },
+  {
+    title: "Triển khai & Render",
+    items: ["Render", "Docker", "Docker Compose", "CI/CD"],
+  },
+  {
+    title: "AI / Thị giác máy tính & Kiểm thử",
+    items: [
+      "OpenCV",
+      "MediaPipe",
+      "YOLO / Ultralytics",
+      "Django TestCase",
+      "Pytest",
+      "Playwright",
+    ],
+  },
+];
+
 export default function About({ profile }) {
   return (
     <section className="page" id="about">
@@ -11,28 +65,35 @@ export default function About({ profile }) {
         </header>
         <div className="about-grid">
           <div>
-            <div className="kicker">Không ngừng học hỏi</div>
+            <div className="kicker">Giới thiệu bản thân</div>
             <h3>
-              Từ một ý tưởng nhỏ,
+              Lập trình viên Full-stack
               <br />
-              đến một sản phẩm có ích.
+              Python • Django • ReactJS.
             </h3>
             <p className="body-copy">
-              Mình là Vũ, một sinh viên yêu thích lập trình web. Mình đang tìm
-              hiểu cách kết hợp giao diện dễ sử dụng với hệ thống hoạt động rõ
-              ràng, hiệu quả.
+              Sinh viên ngành Công nghệ thông tin tại Trường Đại học Công nghệ
+              Thông tin và Truyền thông Việt – Hàn (VKU), có kinh nghiệm thực
+              hành phát triển ứng dụng Full-stack với Python, Django REST
+              Framework, FastAPI, Flask, ReactJS và cơ sở dữ liệu quan hệ.
             </p>
             <p className="body-copy">
-              ReactJS, Python và Django là những công nghệ mình quan tâm. Mỗi dự
-              án là một cơ hội để thực hành, thử nghiệm và hiểu sâu hơn về cách
-              xây dựng phần mềm.
+              Đã xây dựng nền tảng thương mại điện tử thiết bị gaming (NEXA GEAR
+              / CommerceOS) và hệ thống hỗ trợ an toàn lái xe ứng dụng AI
+              (SafeVision). Có kiến thức về thiết kế REST API, xác thực JWT,
+              tích hợp frontend – backend, giao diện quản trị, thị giác máy tính
+              và triển khai ứng dụng. Mong muốn ứng tuyển vị trí Full-stack
+              Developer Intern/Fresher.
             </p>
             <div className="facts">
               <div>
                 <span>HỌ VÀ TÊN</span>Lê Thành Vũ
               </div>
               <div>
-                <span>ĐỊNH HƯỚNG</span>Web Development
+                <span>ĐỊNH HƯỚNG</span>Full-stack Developer
+              </div>
+              <div>
+                <span>HỌC VẤN</span>ĐH Việt – Hàn (VKU)
               </div>
               <div>
                 <span>GITHUB</span>
@@ -51,27 +112,24 @@ export default function About({ profile }) {
             </Link>
           </div>
           <div className="skills">
-            <div className="kicker">Công nghệ quan tâm</div>
+            <div className="kicker">Kỹ năng chuyên môn</div>
             <h3>Bộ công cụ của mình</h3>
             <p className="body-copy">
-              Những công nghệ mình đang học và sử dụng trong các bài thực hành.
+              Các công nghệ, cơ sở dữ liệu và quy trình triển khai mình sử dụng
+              trong học tập và dự án thực tế.
             </p>
-            <div className="tags">
-              <span>ReactJS</span>
-              <span>JavaScript</span>
-              <span>HTML / CSS</span>
-              <span>Python</span>
-              <span>Django</span>
-              <span>MongoDB</span>
-              <span>React Native</span>
-              <span>Git / GitHub</span>
+            <div className="skill-groups">
+              {skillGroups.map((group) => (
+                <div className="skill-group" key={group.title}>
+                  <h4>{group.title}</h4>
+                  <div className="tags">
+                    {group.items.map((item) => (
+                      <span key={item}>{item}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="divider"></div>
-            <h3>Học bằng cách làm.</h3>
-            <p className="body-copy">
-              Từ ứng dụng di động đến website và các ý tưởng AI — mình thích thử
-              sức với những bài toán mới.
-            </p>
           </div>
         </div>
         <footer className="foot">
