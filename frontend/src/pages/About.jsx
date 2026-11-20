@@ -133,7 +133,7 @@ export default function About({ profile }) {
           </div>
         </div>
         <footer className="foot">
-          <span>Ít hơn, nhưng chỉn chu hơn.</span>
+          <span></span>
           <span>01 / ABOUT ME</span>
         </footer>
       </div>
