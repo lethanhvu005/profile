@@ -30,7 +30,7 @@ const skillGroups = [
   },
   {
     title: "Database",
-    items: ["PostgreSQL", "SQLite", "SQL", "Thiết kế CSDL quan hệ"],
+    items: ["PostgreSQL", "SQLite", "SQL"],
   },
   {
     title: "Git & Công cụ",

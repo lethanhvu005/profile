@@ -40,9 +40,6 @@ export default function Contact({ profile }) {
                 <span>{profile.email || "Chưa thêm email liên hệ"}</span>
               </div>
             </div>
-            <p className="note">
-              Thêm email và mạng xã hội của bạn để hoàn thiện phần liên hệ.
-            </p>
           </div>
           <div className="contact-card">
             <div className="monogram">Vũ.</div>
