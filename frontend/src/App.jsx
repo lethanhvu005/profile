@@ -1,5 +1,5 @@
 import { BrowserRouter, Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -35,6 +35,9 @@ function PortfolioApp() {
   );
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [route.pathname]);
   useEffect(() => {
     const legacy = route.hash.slice(1);
     if (/^(home|about|contact|projects(?:\/\d+)?)$/.test(legacy)) {
@@ -42,7 +45,6 @@ function PortfolioApp() {
     } else if (route.pathname === "/home") {
       navigate("/", { replace: true });
     }
-    window.scrollTo(0, 0);
   }, [route.pathname, route.hash, navigate]);
   useEffect(() => {
     document.body.classList.toggle("light", light);
