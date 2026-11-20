@@ -100,7 +100,7 @@ function PortfolioApp() {
           </button>
         ))}
       </nav>
-      <main>
+      <main key={route.pathname}>
         {error ? (
           <div className="content">
             <p className="error">{error}</p>

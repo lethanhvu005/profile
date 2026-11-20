@@ -34,7 +34,43 @@ body.light .pill i,body.light .pill:hover{color:#fff}
 .art:has(img){padding:0}
 .content{padding:56px 105px 64px 50px}
 .section-head{margin-bottom:32px}
-@keyframes enter{from{opacity:0}to{opacity:1}}
+@keyframes enter{from{opacity:0;transform:scale(.992)}to{opacity:1;transform:none}}
+@keyframes riseIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes portraitIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes wedgeIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.page{animation:enter .48s cubic-bezier(.22,1,.36,1) both}
+.wedge{animation:wedgeIn .7s cubic-bezier(.22,1,.36,1) both}
+.portrait{animation:portraitIn .65s cubic-bezier(.22,1,.36,1) .06s both}
+.intro>*{animation:riseIn .55s cubic-bezier(.22,1,.36,1) both}
+.intro>:nth-child(1){animation-delay:.06s}
+.intro>:nth-child(2){animation-delay:.14s}
+.intro>:nth-child(3){animation-delay:.22s}
+.intro>:nth-child(4){animation-delay:.3s}
+.section-head .ghost{animation:enter .6s cubic-bezier(.22,1,.36,1) both}
+.section-head h2{animation:riseIn .5s cubic-bezier(.22,1,.36,1) .08s both}
+.filters{animation:riseIn .45s cubic-bezier(.22,1,.36,1) .14s both}
+.project{animation:cardIn .55s cubic-bezier(.22,1,.36,1) both;transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .25s ease,box-shadow .3s ease}
+.project:nth-child(1){animation-delay:.16s}
+.project:nth-child(2){animation-delay:.24s}
+.project:nth-child(3){animation-delay:.32s}
+.project:nth-child(4){animation-delay:.4s}
+.project:hover{transform:translateY(-6px);box-shadow:0 16px 36px #0004}
+.project .art img{transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.project:hover .art img{transform:scale(1.04)}
+.about-grid>*, .contact-grid>*{animation:riseIn .55s cubic-bezier(.22,1,.36,1) both}
+.about-grid>:nth-child(1), .contact-grid>:nth-child(1){animation-delay:.1s}
+.about-grid>:nth-child(2), .contact-grid>:nth-child(2){animation-delay:.2s}
+.skill-group{animation:riseIn .45s cubic-bezier(.22,1,.36,1) both}
+.skill-group:nth-child(1){animation-delay:.18s}
+.skill-group:nth-child(2){animation-delay:.24s}
+.skill-group:nth-child(3){animation-delay:.3s}
+.skill-group:nth-child(4){animation-delay:.36s}
+.skill-group:nth-child(5){animation-delay:.42s}
+.skill-group:nth-child(6){animation-delay:.48s}
+.project-heading{animation:riseIn .5s cubic-bezier(.22,1,.36,1) .04s both}
+.project-cover{animation:cardIn .6s cubic-bezier(.22,1,.36,1) .12s both}
+.detail-section{animation:riseIn .55s cubic-bezier(.22,1,.36,1) .18s both}
 @media(max-width:800px){.content{padding:88px 25px 100px}.section-head{margin-bottom:28px}}
 .fact-link:hover{color:var(--accent);text-decoration:underline}
 .skill-groups{display:grid;gap:22px;margin-top:24px}
